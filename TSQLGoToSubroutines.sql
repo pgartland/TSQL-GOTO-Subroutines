@@ -25,11 +25,11 @@ BEGIN
 	goto start 
 
 	/* variables referenced in multiple subroutines: */
-	declare @x		bigint,
-			@y		bigint,
-			@L		tinyint,
-			@LTemp	tinyint,
-			@temp	bigint
+	declare @x	bigint,
+		@y	bigint,
+		@L	tinyint,
+		@LTemp	tinyint,
+		@temp	bigint
 	
 	/*Router(@L tinyint): sub-routine to transfer control per @L (label #) value: */
 	Router: 
@@ -74,49 +74,49 @@ BEGIN
 	begin
 		declare @fibo bigint;
 
-		declare @fibo_i	 int = 0,				
-				@fibo1 int,
-				@fibo2 int
+		declare @fibo_i	int = 0,				
+			@fibo1 	int,
+			@fibo2  int
 	
 		if(@x=0)
 		begin
-			set @fibo=0;
-			goto Router;
+		 set @fibo=0;
+		 goto Router;
 		end
 		
 		if(@x=1)
 		begin
-			set @fibo=1;
-			goto Router;
+		 set @fibo=1;
+		 goto Router;
 		end
 
 		fibo_sub:
 		begin
-			if(@fibo_i>@x)
-			begin				
-				goto Router;
-			end
+		 if(@fibo_i>@x)
+		 begin				
+		  goto Router;
+		 end
 
-			if(@fibo_i=0)
-			begin
-				set @fibo1=0;
-				set @fibo2=0;
-			end
-			else if(@fibo_i=1)
-			begin
-				set @fibo1=0;
-				set @fibo2=1;
-			end
-			else
-			begin
-				set @fibo=@fibo1+@fibo2;			
-				set @fibo1=@fibo2;
-				set @fibo2=@fibo;
-			end
+		 if(@fibo_i=0)
+		 begin
+		  set @fibo1=0;
+		  set @fibo2=0;
+		 end
+		 else if(@fibo_i=1)
+		 begin
+		  set @fibo1=0;
+		  set @fibo2=1;
+		 end
+		 else
+		 begin
+		  set @fibo=@fibo1+@fibo2;			
+		  set @fibo1=@fibo2;
+		  set @fibo2=@fibo;
+		 end
 			
-			set @fibo_i=(@fibo_i+1);			
-			goto fibo_sub;
-		end
+		 set @fibo_i=(@fibo_i+1);			
+		 goto fibo_sub;
+	    end
 	end	
 	
 	/* SumC1(C1 bigint): returns @SumC1 bigint 
@@ -150,15 +150,15 @@ BEGIN
 	/* Squared(@x bigint): returns @Squared */
 	Squared:
 	begin
-		declare @Squared bigint=(@x*@x);
-		goto Router;
+	 declare @Squared bigint=(@x*@x);
+	 goto Router;
 	end
 
 	/* Cubed(@x bigint): returns @Cubed bigint */
 	Cubed:
 	begin
-		declare @Cubed bigint=(@x*@x*@x);
-		goto Router;
+	 declare @Cubed bigint=(@x*@x*@x);
+	 goto Router;
 	end
 
 	/* GTGT(@x bigint): returns @Gtgt bigint  
@@ -189,7 +189,9 @@ END
 /* script */
 start:
 set nocount on;
-declare	@c1	bigint,	@c2	bigint, @c3	bigint
+
+/* variables per detail table/cursor: */
+declare	@c1 bigint, @c2	bigint
 
 /* example detail data table: */
 drop table if exists #T0; create table #T0(C1 int,C2 int); insert into #T0(C1,C2) values(1,2),(2,3),(3,4),(5,6),(7,8);
@@ -197,8 +199,8 @@ drop table if exists #T0; create table #T0(C1 int,C2 int); insert into #T0(C1,C2
 /* result data table: */
 drop table if exists #T1; create table #T1
 (
- C1		bigint,
- C2		bigint,
+ C1	bigint,
+ C2	bigint,
  SumC1	bigint,
  FiboC2	bigint,
  Fact	bigint,
@@ -230,8 +232,9 @@ begin
 	/* call GTGT(@x) where @x=(@c1+@c2); output to @Gtgt: */
 	set @x=(@c1+@c2) set @L=6 goto GTGT L6:
 
+	/* insert row or returned values into results table: */
 	insert into #T1(C1,C2,SumC1,FiboC2,Fact,Seq,foo,GTGT)
-		values(@c1,@c2,@SumC1,@Fibo,@Factorial,@Seq,@Foo,@Gtgt)
+	  values(@c1,@c2,@SumC1,@Fibo,@Factorial,@Seq,@Foo,@Gtgt)
 
 	fetch next from CSR1 into @c1,@c2;		
 end close CSR1; deallocate CSR1;

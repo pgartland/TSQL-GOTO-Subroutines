@@ -7,7 +7,7 @@ These sub-routines are equivalent to scalar functions with the following differe
 (3) Memoization (per above): re-calculations of known values is avoided (see SumC1).
 
 Like functions, these sub-routines may be referenced by name using a concise syntax.
-For example, "select @Cubed=dbo.Cubed(@x);" is equivalent to "set @x=4 set @L=1; goto Cubed; L1:", after which @Cubed will contain the returned value and control will be set to the end of the statement.
+For example, "select @Cubed=dbo.Cubed(@x)" is equivalent to "set @x=4 set @L=1 goto Cubed L1:", after which @Cubed will contain the returned value and control will be set to the end of the statement.
 One may think of "goto" in this context as equivalent to "exec", but in the same scope.
 
 The contolled usage of GOTO is accomplished via the "Router" sub-routine which is a series of if/goto statements per the label number (@L) value.
@@ -171,10 +171,10 @@ BEGIN
 	 set @LTemp=@L;		
 	 
 	 /* call Squared(@x); output to @Squared: */
-	 set @L=7; goto Squared; L7: 
+	 set @L=7 goto Squared L7: 
 	 	
 	 /* call Cubed(@x); output to @Cubed: */	
-	 set @L=8; goto Cubed; L8: 
+	 set @L=8 goto Cubed L8: 
 	 
 	 set @gtgt=(@Squared+@Cubed);
 	 

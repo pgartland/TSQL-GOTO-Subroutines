@@ -7,14 +7,11 @@ These sub-routines are equivalent to scalar functions with the following differe
 (3) Memoization (per above): re-calculations of known values is avoided (see SumC1).
 
 Like functions, these sub-routines may be referenced by name using a concise syntax.
-For example, "select @Cubed=dbo.Cubed(@x)" is equivalent to "set @x=4 set @L=1 goto Cubed L1:", after which @Cubed will contain the returned value and control will be set to the end of the statement.
-One may think of "goto" in this context as equivalent to "exec", but in the same scope.
+For example, "select @Cubed=dbo.Cubed(@x)" is equivalent to "set @x=4 set @L=1 goto Cubed L1:", after which @Cubed will contain the returned value and control will be set to the end of the statement. One may think of "goto" in this context as equivalent to "exec", but in the same scope.
 
 The contolled usage of GOTO is accomplished via the "Router" sub-routine which is a series of if/goto statements per the label number (@L) value.
 Each sub-routine definition terminates with a call (goto) Router which returns control to the location immediately following the sub-routine call (see above).
-If a label number is not found by Router, the script terminates via a return statement.
-A sub-routine may call other sub-routines (see GTGT below. Additional "@LTemp# variables would be required to scale greater than 2 levels)
-Sub-routines - which are bound by a label - may contain labels (see Factorial, Fibo) which may be used with traditional goto calls (that is, not using the above syntax) to implement iteration or recursion-like behavior.
+If a label number is not found by Router, the script terminates via a return statement. A sub-routine may call other sub-routines (see GTGT below. Additional "@LTemp# variables would be required to scale greater than 2 levels). Sub-routines - which are bound by a label - may contain labels (see Factorial, Fibo) which may be used with traditional goto calls (that is, not using the above syntax) to implement iteration or recursion-like behavior.
 
 Finally, this approach offers modularity similar to functions while not requiring deployment of any database objects.
 
